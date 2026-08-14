@@ -7,8 +7,9 @@ export async function GET() {
     const [brands, categories, products, warehouses, suppliers] = await Promise.all([
       db.brand.findMany({ where: { isActive: true }, orderBy: { name: 'asc' } }),
       db.category.findMany({ where: { isActive: true }, orderBy: { sortOrder: 'asc' } }),
+      // Return ALL products (active + inactive) so admin can manage disabled ones.
+      // Customer-facing UIs filter by `isActive` themselves.
       db.product.findMany({
-        where: { isActive: true },
         include: {
           brand: true,
           category: true,

@@ -15,10 +15,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SecureVision CCTV — Catalog & Setup Builder",
+  title: "Connectz CCTV — Catalog & Setup Builder",
   description: "Build a complete CCTV system in 7 simple steps. Database-driven product catalog, intelligent compatibility engine, and admin inventory management.",
-  keywords: ["CCTV", "surveillance", "DVR", "NVR", "PoE", "security cameras", "setup builder"],
-  authors: [{ name: "SecureVision" }],
+  keywords: ["CCTV", "surveillance", "DVR", "NVR", "PoE", "security cameras", "setup builder", "Connectz"],
+  authors: [{ name: "Connectz" }],
   icons: {
     icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },

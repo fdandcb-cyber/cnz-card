@@ -41,7 +41,8 @@ export function CatalogBrowser() {
   const products = data?.products || []
 
   const filtered = useMemo(() => {
-    let r = products.filter((p) => p.category?.slug === activeCat)
+    // Customer view: only show active products
+    let r = products.filter((p) => p.isActive && p.category?.slug === activeCat)
     if (search) {
       const q = search.toLowerCase()
       r = r.filter((p) =>
@@ -64,21 +65,21 @@ export function CatalogBrowser() {
     return r
   }, [products, activeCat, search, brand, variety, megapixel, sort])
 
-  // Unique filter values for active category
+  // Unique filter values for active category (only count active products)
   const brandsInCat = useMemo(() => {
-    const set = new Set(products.filter((p) => p.category?.slug === activeCat).map((p) => p.brandId))
+    const set = new Set(products.filter((p) => p.isActive && p.category?.slug === activeCat).map((p) => p.brandId))
     return data?.brands.filter((b) => set.has(b.id)) || []
   }, [products, activeCat, data])
 
   const varieties = useMemo(() => {
     const set = new Set<string>()
-    products.filter((p) => p.category?.slug === activeCat).forEach((p) => p.variety && set.add(p.variety))
+    products.filter((p) => p.isActive && p.category?.slug === activeCat).forEach((p) => p.variety && set.add(p.variety))
     return Array.from(set)
   }, [products, activeCat])
 
   const megapixels = useMemo(() => {
     const set = new Set<string>()
-    products.filter((p) => p.category?.slug === activeCat).forEach((p) => p.megapixel && set.add(p.megapixel))
+    products.filter((p) => p.isActive && p.category?.slug === activeCat).forEach((p) => p.megapixel && set.add(p.megapixel))
     return Array.from(set)
   }, [products, activeCat])
 
