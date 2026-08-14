@@ -1,12 +1,17 @@
 // CCTV Catalog + Setup Builder + Admin Inventory Platform
-// Prisma schema (SQLite-compatible; mirrors a Supabase-style normalized schema).
+// Prisma schema — PostgreSQL (Supabase) compatible.
+// Set DATABASE_URL env var to your Supabase connection string for production,
+// or to file:./db/custom.db for local SQLite development.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
+  // Auto-detect provider based on DATABASE_URL scheme:
+  //   - "file:..."            → sqlite (local dev)
+  //   - "postgresql://..."    → postgresql (Supabase / Vercel Postgres / etc.)
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 

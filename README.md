@@ -149,6 +149,50 @@ To port to Supabase:
 
 ## Production Deployment
 
+### Deploy on Vercel (recommended, ~5 minutes)
+
+1. **Push to GitHub** (already done at <https://github.com/fdandcb-cyber/cnz-card>)
+
+2. **Set up Supabase first** (gives you `DATABASE_URL`):
+   - Create a project at <https://supabase.com>
+   - Open Supabase SQL Editor → paste contents of [`supabase/schema.sql`](supabase/schema.sql) → Run
+   - This creates all 22 tables, indexes, RLS policies, and seeds the rules
+   - Project Settings → Database → Connection string → copy the URI
+   - Replace `[YOUR-PASSWORD]` with your actual DB password
+
+3. **Import to Vercel**:
+   - Go to <https://vercel.com/new>
+   - Find `fdandcb-cyber/cnz-card` → **Import**
+   - Framework: **Next.js** (auto-detected)
+   - Build & Output Settings: leave as default
+
+4. **Add Environment Variables** (in the Vercel import screen):
+
+   | Name | Value |
+   |---|---|
+   | `DATABASE_URL` | Your Supabase connection string (Step 2) |
+   | `ADMIN_EMAIL` | `connectzsalesandservices@gmail.com` |
+   | `ADMIN_PASSWORD` | Your strong password (e.g. `Connectz@2026`) |
+   | `NEXTAUTH_SECRET` | Click **Generate** in Vercel, or run `openssl rand -base64 32` locally |
+   | `NEXTAUTH_URL` | Leave empty for first deploy; set after Vercel gives you the URL (e.g. `https://cnz-card.vercel.app`) |
+   | `NEXT_PUBLIC_WHATSAPP_NUMBER` | `917809465102` |
+
+5. **Click Deploy** — wait ~2-3 min
+
+6. **After deploy, set `NEXTAUTH_URL`**:
+   - Vercel → your project → **Settings → Environment Variables**
+   - Edit `NEXTAUTH_URL` → set to your live URL (e.g. `https://cnz-card.vercel.app`)
+   - Save → go to **Deployments** → ⋮ on latest deploy → **Redeploy**
+
+7. **Optional: Seed demo products** (only if you want the 36 demo products):
+   - Run locally with your Supabase `DATABASE_URL` set in `.env`:
+     ```bash
+     DATABASE_URL='postgresql://...' bun run scripts/seed.ts
+     ```
+   - This inserts brands, categories, products, warehouses, suppliers
+
+### Other platforms
+
 1. Set environment variables in your hosting platform (Vercel / Netlify / self-hosted):
    - `DATABASE_URL` — Supabase PostgreSQL connection string
    - `ADMIN_EMAIL` — your admin email
@@ -156,9 +200,9 @@ To port to Supabase:
    - `NEXTAUTH_SECRET` — generate with `openssl rand -base64 32`
    - `NEXTAUTH_URL` — your production URL
    - `NEXT_PUBLIC_WHATSAPP_NUMBER` — your WhatsApp support number (international format, no `+`)
-2. Run database migrations
-3. Seed initial data (brands, categories, rules)
-4. Build and deploy
+2. Run `supabase/schema.sql` against your PostgreSQL database
+3. Build with `bun run build`
+4. Deploy
 
 ---
 

@@ -56,6 +56,8 @@ server.log
 .env
 .env.local
 .env.production
+# Exception: track .env.example so deployers know what to set
+!.env.example
 
 # Local database (SQLite) - regenerable from schema + seed
 db/*.db
